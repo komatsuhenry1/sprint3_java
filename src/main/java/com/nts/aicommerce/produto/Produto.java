@@ -19,7 +19,7 @@ import lombok.Data;
 @Builder
 public class Produto {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long produtoId;
 
     @NotBlank
@@ -30,9 +30,6 @@ public class Produto {
 
     @Positive
     private Double preco;
-
-    @PositiveOrZero
-    private Long estoque;
 
     @ManyToOne
     private Categoria categoria;
