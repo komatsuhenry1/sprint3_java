@@ -2,17 +2,21 @@ package com.nts.aicommerce.pedido;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,8 +45,9 @@ public class PedidoController {
     }
 
     @GetMapping("cliente/{nome}")
-    public ResponseEntity<List<Pedido>> getPedidoByCliente(@PathVariable String nome){
-        List<Pedido> pedidos = repository.findByClienteNome(nome);
+    public ResponseEntity<Page<Pedido>> getPedidoByCliente(@PathVariable String nome,
+    @PageableDefault(size = 5, sort = "dataPedido", direction = Direction.DESC) Pageable pageable){
+        Page<Pedido> pedidos = repository.findByClienteNome(nome, pageable);
         return ResponseEntity.ok(pedidos);
     }
 
@@ -79,7 +84,7 @@ public class PedidoController {
         return ResponseEntity.ok("Pedido apagado com sucesso");
     }
 
-    /**
+     /**
      * Verificação feita para os métodos de update e delete.
      * @param id
      * @throws ResponseStatusException
@@ -88,8 +93,11 @@ public class PedidoController {
      * Pedro Sena
      */
     private void verify(Long id) {
-        repository.findById(id).orElseThrow(() -> new ResponseStatusException(
-                NOT_FOUND,
-                "Pedido não encontrado"));
+
+        boolean exists = repository.existsById(id);
+
+        if (exists == false) {
+            throw new EntityNotFoundException("Não encontrado");
+        }
     }
 }

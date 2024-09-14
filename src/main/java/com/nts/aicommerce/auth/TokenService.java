@@ -19,7 +19,7 @@ public class TokenService {
 
     public TokenService(ClienteRepository clienteRepository) {
         this.clienteRepository = clienteRepository;
-        this.algorithm = Algorithm.HMAC256("secretTokenSign");
+        this.algorithm = Algorithm.HMAC256("secretTokenAlgorith58256421");
     }
 
     public Token create(Credentials credentials) {

@@ -1,13 +1,13 @@
 package com.nts.aicommerce.produto;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
 @RestController
@@ -41,9 +43,21 @@ public class ProdutoController {
 
     @GetMapping
     @ResponseStatus(FOUND)
-    public ResponseEntity<List<Produto>> getProduto() {
-            List<Produto> Produtos = repository.findAll();
-            return ResponseEntity.ok(Produtos);
+    public ResponseEntity<Page<Produto>> getProduto(
+            @RequestParam(required = false) String categoria,
+            @RequestParam(required = false) String nome,
+            @PageableDefault(size = 5) Pageable pageable) {
+                
+        if (categoria != null) {
+            return ResponseEntity.ok(repository.findByCategoriaNome(categoria, pageable));
+        }
+
+        if (nome != null) {
+            return ResponseEntity.ok(repository.findByNomeContaining(nome, pageable));
+        }
+
+        Page<Produto> Produtos = repository.findAll(pageable);
+        return ResponseEntity.ok(Produtos);
     }
 
     @PostMapping
@@ -74,20 +88,21 @@ public class ProdutoController {
         return ResponseEntity.ok("Produto apagado com sucesso");
     }
 
-     /**
+    /**
      * Verificação feita para os métodos de update e delete.
+     * 
      * @param id
      * @throws ResponseStatusException
-     * Se entidade não fôr encontrada
-     * @author 
-     * Pedro Sena
+     *                                 Se entidade não fôr encontrada
+     * @author
+     *         Pedro Sena
      */
     private void verify(Long id) {
 
-        repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        NOT_FOUND,
-                        "Produto não encontrado"));
+        boolean exists = repository.existsById(id);
 
+        if (exists == false) {
+            throw new EntityNotFoundException("Não encontrado");
+        }
     }
 }

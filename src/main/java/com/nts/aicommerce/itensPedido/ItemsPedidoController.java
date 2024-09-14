@@ -2,7 +2,6 @@ package com.nts.aicommerce.itensPedido;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.FOUND;
 import static org.springframework.http.HttpStatus.OK;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
 @RestController
@@ -74,6 +74,7 @@ public class ItemsPedidoController {
         return ResponseEntity.ok("Perfil apagado com sucesso");
     }
 
+    
      /**
      * Verificação feita para os métodos de update e delete.
      * @param id
@@ -84,10 +85,10 @@ public class ItemsPedidoController {
      */
     private void verify(Long id) {
 
-        repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        NOT_FOUND,
-                        "ItemsPedido não encontrado"));
+        boolean exists = repository.existsById(id);
 
+        if (exists == false) {
+            throw new EntityNotFoundException("Não encontrado");
+        }
     }
 }

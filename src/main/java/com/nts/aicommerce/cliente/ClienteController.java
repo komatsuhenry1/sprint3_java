@@ -1,6 +1,5 @@
 package com.nts.aicommerce.cliente;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.FOUND;
 import static org.springframework.http.HttpStatus.OK;
@@ -18,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
 @RestController
@@ -75,10 +75,10 @@ public class ClienteController {
      */
     private void verify(Long id) {
 
-        repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        NOT_FOUND,
-                        "Cliente não encontrado"));
+        boolean exists = repository.existsById(id);
 
+        if (exists == false) {
+            throw new EntityNotFoundException("Não encontrado");
+        }
     }
 }
