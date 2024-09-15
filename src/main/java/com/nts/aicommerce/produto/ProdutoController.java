@@ -56,8 +56,8 @@ public class ProdutoController {
             return ResponseEntity.ok(repository.findByNomeContaining(nome, pageable));
         }
 
-        Page<Produto> Produtos = repository.findAll(pageable);
-        return ResponseEntity.ok(Produtos);
+        Page<Produto> produtos = repository.findAll(pageable);
+        return ResponseEntity.ok(produtos);
     }
 
     @PostMapping
