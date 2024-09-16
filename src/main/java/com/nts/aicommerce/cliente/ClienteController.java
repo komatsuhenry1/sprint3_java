@@ -36,6 +36,16 @@ public class ClienteController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/email/{email}")
+    @ResponseStatus(FOUND)
+    public ResponseEntity<Cliente> getUserbyEmail(@PathVariable String email) {
+
+        return repository
+                .findByEmail(email)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
     
     @PostMapping
     @ResponseStatus(CREATED)
