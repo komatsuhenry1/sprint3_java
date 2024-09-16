@@ -12,7 +12,7 @@ Esse repositório é dedicado ao versionamento da api do ai commerce, projeto fu
 
 Nessa nova versão da api se encontram endpoints paginados prometidos na entrega anterior, utilizando jpa, querys personalizadas e relacionamento entre tabelas. Além da funcionalidade inédita de autenticação com tokens jwt, e migrations com flyway.
 
-<!-- TODO MOdelo de banco de dados -->
+[Video de demonstração](https://youtu.be/3dxWwb2VVWA)
 
 ## Compilando o projeto e Acessando documentação
 
