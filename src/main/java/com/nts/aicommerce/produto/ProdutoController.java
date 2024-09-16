@@ -4,6 +4,8 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +41,14 @@ public class ProdutoController {
                 .findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/many")
+    @ResponseStatus(FOUND)
+    public ResponseEntity<Page<Produto>> getProduto(@RequestParam List<Long> lista, Pageable pageable) {
+        Page<Produto> produtos = repository.findByProdutoIdIn(lista, pageable);
+
+        return ResponseEntity.ok(produtos);
     }
 
     @GetMapping

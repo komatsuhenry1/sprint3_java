@@ -39,6 +39,14 @@ public class ItemsPedidoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/pedido/{id}")
+    @ResponseStatus(FOUND)
+    public ResponseEntity<List<ItemsPedido>> getItemByPedido(@PathVariable Long id) {
+
+        List<ItemsPedido> ItemsPedidos = repository.findByPedidoPedidoId(id);
+        return ResponseEntity.ok(ItemsPedidos);
+    }
+
     @GetMapping
     @ResponseStatus(FOUND)
     public ResponseEntity<List<ItemsPedido>> getItems() {
