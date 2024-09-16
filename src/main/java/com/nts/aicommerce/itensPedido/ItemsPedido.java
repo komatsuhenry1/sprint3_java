@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "items_pedido")
 public class ItemsPedido {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long itemsId;
 
     private int quantidade;

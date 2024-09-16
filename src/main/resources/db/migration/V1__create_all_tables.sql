@@ -1,5 +1,5 @@
 create table if not exists cliente(
-    cliente_id bigint not null auto_increment,
+    cliente_id bigint auto_increment,
     nome varchar(255),
     email varchar(255),
     endereco varchar(255),
@@ -8,13 +8,13 @@ create table if not exists cliente(
 );
 
 create table if not exists categoria(
-    categoria_id bigint not null auto_increment,
+    categoria_id bigint auto_increment,
     nome varchar(255),
     primary key (categoria_id) 
 );
 
 create table if not exists produto(
-    produto_id bigint not null auto_increment,
+    produto_id bigint auto_increment,
     nome varchar(255),
     descricao varchar(255),
     preco double,
@@ -24,7 +24,7 @@ create table if not exists produto(
 );
 
 create table if not exists pedido(
-    pedido_id bigint not null auto_increment,
+    pedido_id bigint auto_increment,
     data_pedido date,
     preco_total double,
     cliente_id bigint,
@@ -33,7 +33,7 @@ create table if not exists pedido(
 );
 
 create table if not exists items_pedido(
-    items_id bigint not null auto_increment,
+    items_id bigint auto_increment,
     quantidade int,
     preco double,
     pedido_id bigint,
