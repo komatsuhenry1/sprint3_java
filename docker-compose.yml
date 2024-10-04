@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: aicommerce
+      POSTGRES_USER: adminaicommerce
+      POSTGRES_PASSWORD: adm123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    image: sua_imagem_springboot
+    container_name: springboot_app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/aicommerce
+      SPRING_DATASOURCE_USERNAME: aicommerce
+      SPRING_DATASOURCE_PASSWORD: adm123
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
