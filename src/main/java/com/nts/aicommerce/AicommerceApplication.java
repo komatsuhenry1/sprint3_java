@@ -10,11 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AicommerceApplication {
 
-	@GetMapping("/")
-	private ResponseEntity<String> info(){
-		return ResponseEntity.ok("Working");
-	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(AicommerceApplication.class, args);
 	}

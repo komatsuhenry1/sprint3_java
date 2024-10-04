@@ -61,34 +61,14 @@ public class ClienteController {
     @PutMapping
     @ResponseStatus(CREATED)
     public ResponseEntity<Cliente> updateUser(@RequestBody @Valid Cliente cliente) {
-        verify(cliente.getClienteId());
-
         return ResponseEntity.ok(repository.save(cliente));
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(OK)
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        verify(id);
         repository.deleteById(id);
 
         return ResponseEntity.ok("Perfil apagado com sucesso");
-    }
-
-     /**
-     * Verificação feita para os métodos de update e delete.
-     * @param id
-     * @throws ResponseStatusException
-     * Se entidade não fôr encontrada
-     * @author 
-     * Pedro Sena
-     */
-    private void verify(Long id) {
-
-        boolean exists = repository.existsById(id);
-
-        if (exists == false) {
-            throw new EntityNotFoundException("Não encontrado");
-        }
     }
 }
