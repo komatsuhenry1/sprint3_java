@@ -1,4 +1,4 @@
-package com.nts.aicommerce.auth;
+// package com.nts.aicommerce.auth;
 
-public record Credentials(String email, String password) {
-}
+// public record Credentials(String email, String password) {
+// }
